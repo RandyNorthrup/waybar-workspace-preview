@@ -32,9 +32,13 @@ jobs:
         run: meson compile -C build
       - name: Unit tests
         run: meson test -C build --print-errorlogs
-      - name: Only Waybar's entry points are exported
+      - name: Release build exports only Waybar's entry points
+        env:
+          CC: ${{ matrix.compiler }}
         run: |
-          exported=$(nm -D --defined-only build/waybar-workspace-preview.so | awk '{print $3}' | sort | tr '\n' ' ')
+          meson setup release --buildtype=release -Dtests=false --werror
+          meson compile -C release
+          exported=$(nm -D --defined-only release/waybar-workspace-preview.so | awk '{print $3}' | sort | tr '\n' ' ')
           echo "exported: $exported"
           test "$exported" = "wbcffi_deinit wbcffi_init wbcffi_version "
 
