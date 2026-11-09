@@ -1,0 +1,25 @@
+// Waybar config excerpt: hyprland/workspaces with workspace previews.
+{
+  "modules-left": ["hyprland/workspaces", "cffi/workspace-preview"],
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {"1": "", "2": "", "3": "", "default": ""}
+  },
+
+  "cffi/workspace-preview": {
+    // Absolute path: Waybar does not expand "~" here.
+    // Arch package: /usr/lib/waybar/waybar-workspace-preview.so
+    // ./install.sh: /home/YOU/.local/lib/waybar/waybar-workspace-preview.so
+    "module_path": "/usr/lib/waybar/waybar-workspace-preview.so",
+
+    "width": 320,                       // thumbnail width in logical pixels
+    "windows": false,                   // also list the open windows under the thumbnail
+    "wallpaper": "~/Pictures/wall.png", // drawn behind the windows ("~" works here)
+    "wallpaper-fit": "fill",            // fill | fit | stretch | center
+    "background": "#11111b",            // behind the wallpaper; "transparent" shows the tooltip's background
+    "capture-on-leave": true,           // capture a workspace as you switch away from it
+    "refresh-on-hover": true,           // capture again when its button is hovered
+    "refresh-interval": 1.5             // ...unless the last capture is younger than this (seconds)
+  }
+}

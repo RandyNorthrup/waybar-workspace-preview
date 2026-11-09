@@ -1,0 +1,25 @@
+/* waybar-workspace-preview: optional styling (add to ~/.config/waybar/style.css) */
+
+/* The tooltip window itself (all Waybar tooltips) */
+tooltip {
+  background: rgba(17, 17, 27, 0.95);
+  border: 1px solid #89b4fa;
+  border-radius: 12px;
+  padding: 2px;
+}
+tooltip label {
+  color: #cdd6f4;
+}
+
+/* The preview inside it */
+.workspace-preview {
+  padding: 0;
+}
+.workspace-preview-image {
+  padding: 0;
+  border: 1px solid rgba(205, 214, 244, 0.25);
+  border-radius: 6px;
+}
+.workspace-preview-window {        /* one row of the window list ("windows": true) */
+  padding: 1px 2px;
+}

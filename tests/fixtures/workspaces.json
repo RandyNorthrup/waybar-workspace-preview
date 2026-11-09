@@ -1,0 +1,7 @@
+[
+  {"id": 1, "name": "1", "monitor": "eDP-1", "monitorID": 0, "windows": 3, "hasfullscreen": false},
+  {"id": 2, "name": "2", "monitor": "eDP-1", "monitorID": 0, "windows": 0, "hasfullscreen": false},
+  {"id": 3, "name": "dev", "monitor": "DP-1", "monitorID": 1, "windows": 1, "hasfullscreen": true},
+  {"id": 4, "name": "4", "monitor": "HDMI-A-1", "monitorID": 2, "windows": 0, "hasfullscreen": false},
+  {"id": -98, "name": "special:magic", "monitor": "eDP-1", "monitorID": 0, "windows": 1, "hasfullscreen": false}
+]

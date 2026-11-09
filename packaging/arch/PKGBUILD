@@ -1,0 +1,27 @@
+# Maintainer: Randy Northrup <randy.northrup@gmail.com>
+pkgname=waybar-workspace-preview
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Live workspace thumbnails in the tooltips of Waybar's Hyprland workspace buttons"
+arch=('x86_64' 'aarch64')
+url="https://github.com/RandyNorthrup/waybar-workspace-preview"
+license=('MIT')
+depends=('waybar' 'gtk3' 'json-glib' 'glib2' 'gdk-pixbuf2' 'grim')
+optdepends=('hyprland: the compositor this module previews')
+makedepends=('meson' 'git')
+source=("$pkgname::git+$url.git#tag=v$pkgver")
+sha256sums=('SKIP')
+
+build() {
+  arch-meson "$pkgname" build
+  meson compile -C build
+}
+
+check() {
+  meson test -C build --print-errorlogs
+}
+
+package() {
+  meson install -C build --destdir "$pkgdir"
+  install -Dm644 "$pkgname/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

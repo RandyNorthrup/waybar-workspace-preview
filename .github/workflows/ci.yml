@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and test (${{ matrix.compiler }})
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --cap-add=SYS_PTRACE  # LeakSanitizer needs ptrace
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+    steps:
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm --needed base-devel git meson clang gtk3 json-glib
+      - uses: actions/checkout@v4
+      - name: Configure (warnings are errors; address and undefined-behaviour sanitizers)
+        env:
+          CC: ${{ matrix.compiler }}
+        run: meson setup build --werror -Db_sanitize=address,undefined -Db_lundef=false
+      - name: Build
+        run: meson compile -C build
+      - name: Unit tests
+        run: meson test -C build --print-errorlogs
+      - name: Only Waybar's entry points are exported
+        run: |
+          exported=$(nm -D --defined-only build/waybar-workspace-preview.so | awk '{print $3}' | sort | tr '\n' ' ')
+          echo "exported: $exported"
+          test "$exported" = "wbcffi_deinit wbcffi_init wbcffi_version "
+
+  format:
+    name: Formatting
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - run: pacman -Syu --noconfirm --needed clang git
+      - uses: actions/checkout@v4
+      - run: clang-format --dry-run --Werror src/*.c src/*.h tests/*.c
+
+  shell:
+    name: Shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: shellcheck install.sh
